@@ -68,7 +68,6 @@
   font-size:clamp(30px,3.5vw,46px);line-height:1.1;letter-spacing:-.012em}
 .band-head h2 em{font-style:italic;color:var(--green)}
 .band-head p{margin:16px 0 0;font-size:15.5px;line-height:1.65;color:#4d574f}
-[data-reveal-item]{opacity:0}
 
 /* --- problem ------------------------------------------------------------ */
 .scatter{display:flex;flex-wrap:wrap;gap:11px;margin-top:34px}
@@ -139,7 +138,7 @@
   .hero-visual{padding:18px}
 }
 @media (prefers-reduced-motion: reduce){
-  .hero-badge,.hero-sub,.hero-cta,.hero-metric,[data-reveal-item],.chain-node,.chain-alert{opacity:1 !important}
+  .hero-badge,.hero-sub,.hero-cta,.hero-metric,.chain-node,.chain-alert{opacity:1 !important}
 }
 
 /* Split text: word wrappers keep words intact, chars animate individually. */
@@ -180,3 +179,100 @@
                padding-right:max(52px,calc((100vw - 1720px) / 2 + 52px))}
   .hero-sub{font-size:19px}
 }
+
+/* ==========================================================================
+   React Bits overrides
+   The registry components ship a dark, oversized default theme. Relay is a
+   light editorial interface, so re-skin them here rather than forking the
+   component source (which keeps them updatable from the registry).
+   ========================================================================== */
+
+/* SpotlightCard: light surface, our own padding, spotlight tinted per card. */
+.landing .card-spotlight{
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:var(--paper);
+  padding:26px 24px 28px;
+  transition:transform .24s cubic-bezier(.22,.61,.36,1), box-shadow .24s ease;
+}
+.landing .card-spotlight:hover{transform:translateY(-4px);box-shadow:0 28px 52px -34px rgba(16,60,42,.62)}
+.landing .card-spotlight::before{transition:opacity .45s ease}
+.landing .card-spotlight:hover::before{opacity:1}
+
+/* ScrollFloat: it defaults to a 10rem, weight-900, centred display face. */
+.landing .scroll-float{overflow:visible;margin:10px 0 0}
+.landing .scroll-float-text{
+  font-family:"Instrument Serif",Georgia,serif;
+  font-size:clamp(30px,3.6vw,50px);
+  font-weight:400;
+  line-height:1.12;
+  letter-spacing:-.012em;
+  text-align:left;
+  color:var(--ink);
+}
+.landing .scroll-float .char{will-change:transform,opacity}
+
+/* ScrollReveal: dial the display size back to body copy. */
+.landing .reveal-block{margin:18px 0 0;max-width:64ch}
+.landing .scroll-reveal-text{
+  font-family:Inter,ui-sans-serif,system-ui,sans-serif;
+  font-size:clamp(16px,1.35vw,19px);
+  font-weight:400;
+  line-height:1.62;
+  color:#4d574f;
+}
+
+/* AnimatedContent wraps each child in a div; keep grid and flex items sane. */
+.steps > div,.missions > div{display:flex}
+.steps > div > *,.missions > div > *{width:100%}
+.scatter > div,.stack-strip > div{display:inline-flex}
+
+/* --- new landing elements ------------------------------------------------ */
+.band .kicker{display:block;font-size:10.5px;font-weight:700;letter-spacing:.13em;color:var(--green)}
+.band-lede{margin:18px 0 0;max-width:64ch;font-size:15.5px;line-height:1.65;color:#4d574f}
+.missions-loading{margin-top:32px;font-size:14px;color:var(--muted)}
+
+.mission-facts{display:flex;flex-wrap:wrap;gap:18px;margin:18px 0 0;padding:14px 0 0;
+  border-top:1px solid var(--line);list-style:none}
+.mission-facts li{display:flex;flex-direction:column;gap:2px}
+.mission-facts span{font-size:9.5px;font-weight:700;letter-spacing:.09em;color:var(--muted)}
+.mission-facts b{font-size:13.5px;font-weight:650;color:var(--ink);font-variant-numeric:tabular-nums}
+
+.mission-card footer{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.mission-time{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.showcase-frame{margin-top:38px;border-radius:20px}
+.showcase-frame .tilted-card-img{box-shadow:0 40px 90px -50px rgba(16,60,42,.75);border-radius:16px}
+.showcase-frame .tilted-card-caption{background:var(--forest);color:#eaf3eb;font-size:11px;
+  padding:6px 11px;border-radius:8px}
+
+.hero-cta-magnet{display:inline-block}
+.closer .hero-cta-magnet{margin-top:28px}
+.closer p{margin:16px auto 0}
+
+/* Motion-sensitive users get the content, not the choreography. */
+@media (prefers-reduced-motion: reduce){
+  .landing .card-spotlight:hover{transform:none}
+  .landing .scroll-float .char,.landing .scroll-reveal-text .word{opacity:1 !important;transform:none !important;filter:none !important}
+}
+
+.route-loading{display:flex;align-items:center;justify-content:center;min-height:100vh;
+  background:var(--cream);color:var(--muted);font-size:14px}
+
+/* The escalation card must stay amber; the generic spotlight override above
+   has equal specificity and would otherwise repaint it. */
+.landing .card-spotlight.mission-card.warn{
+  background:linear-gradient(180deg,#fdf7ec,var(--paper));
+  border-color:#ecd7ae;
+}
+
+/* TiltedCard's 3D figure can extend past its box on narrow screens. `clip`
+   (not `hidden`) stops the page scrolling sideways without turning .landing
+   into a scroll container, which would break the sticky nav. */
+.landing{overflow-x:clip}
+.showcase-frame .tilted-card-figure,
+.showcase-frame .tilted-card-inner,
+.showcase-frame .tilted-card-img{max-width:100%}
+
+/* Keep the tilted preview inside the band's measure. */
+.showcase-frame{max-width:1080px;margin-left:auto;margin-right:auto}

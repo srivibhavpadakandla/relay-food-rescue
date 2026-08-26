@@ -1,8 +1,10 @@
-import { useEffect, useState } from "react";
-import Console from "./Console";
-import Landing from "./Landing";
+import { lazy, Suspense, useEffect, useState } from "react";
 
-/** Two routes, no router dependency: the landing page and the live console. */
+// The two routes have almost no code in common — the landing page pulls in GSAP
+// and Motion, the console pulls in Anime.js — so each is fetched on demand.
+const Landing = lazy(() => import("./Landing"));
+const Console = lazy(() => import("./Console"));
+
 function currentPath() {
   return window.location.pathname.replace(/\/+$/, "") || "/";
 }
@@ -16,7 +18,7 @@ export default function App() {
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  // Intercept in-app links so navigation stays client-side.
+  // Keep in-app navigation client-side.
   useEffect(() => {
     function onClick(event: MouseEvent) {
       const link = (event.target as HTMLElement)?.closest?.("a[data-route]");
@@ -32,5 +34,9 @@ export default function App() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  return path === "/console" ? <Console /> : <Landing />;
+  return (
+    <Suspense fallback={<div className="route-loading" aria-live="polite">Loading Relay…</div>}>
+      {path === "/console" ? <Console /> : <Landing />}
+    </Suspense>
+  );
 }
