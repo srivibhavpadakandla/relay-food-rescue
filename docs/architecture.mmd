@@ -1,0 +1,19 @@
+flowchart LR
+  classDef event fill:#fffefa,stroke:#d8f34b,color:#142018
+  classDef runtime fill:#103c2a,stroke:#d8f34b,color:#ffffff
+  classDef model fill:#d8f34b,stroke:#103c2a,color:#103c2a
+  classDef state fill:#eaf3eb,stroke:#177246,color:#142018
+  classDef action fill:#fffefa,stroke:#177246,color:#142018
+
+  E[Temperature + fleet events]:::event --> P[Google Cloud Pub/Sub]:::event
+  P --> R[Cloud Run<br/>Google ADK API server]:::runtime
+  R --> G[Gemini 3.5 Flash<br/>planner + function calling]:::model
+  R <--> S[Firestore<br/>mission checkpoints]:::state
+  G --> C{Deterministic<br/>policy gate}:::runtime
+  C -->|approved| T[Scoped tool adapters]:::action
+  C -->|blocked| H[Human escalation]:::action
+  T --> F[Fleet reservation]:::action
+  T --> N[Partner capacity]:::action
+  T --> D[Route + notifications]:::action
+  F & N & D --> O[Receipts + OTel traces]:::state
+  O --> U[Relay operations UI]:::event
