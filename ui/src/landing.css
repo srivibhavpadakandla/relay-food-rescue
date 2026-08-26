@@ -154,4 +154,29 @@
 /* The console collapses its sidebar brand on narrow screens; the landing nav
    is a different context and must keep its wordmark. */
 .landing-nav .relay-brand{padding:0}
-.landing-nav .relay-brand > span:last-child{display:block}
+.landing-nav .relay-brand small{color:var(--muted)}
+.landing-nav .relay-brand > span:last-child{display:grid;gap:2px}
+
+
+/* --- large displays ------------------------------------------------------
+   Capped at 1240px the page leaves huge empty margins on a 16" laptop and
+   reads as though it were zoomed out. Let it breathe on wider viewports. */
+@media (min-width:1500px){
+  .hero,.band,.landing-foot{max-width:1560px}
+  .landing-nav{padding-left:max(52px,calc((100vw - 1560px) / 2 + 52px));
+               padding-right:max(52px,calc((100vw - 1560px) / 2 + 52px))}
+  .hero{padding:92px 52px 104px;gap:72px}
+  .band{padding:96px 52px}
+  .landing-foot{padding:34px 52px 54px}
+  .hero-sub{font-size:18px;max-width:56ch}
+  .band-head p{font-size:17px}
+  .hero-metric dd{font-size:40px}
+  .step p,.mission-card > p{font-size:14.5px}
+  .scatter-chip,.stack-strip span{font-size:14.5px}
+}
+@media (min-width:1900px){
+  .hero,.band,.landing-foot{max-width:1720px}
+  .landing-nav{padding-left:max(52px,calc((100vw - 1720px) / 2 + 52px));
+               padding-right:max(52px,calc((100vw - 1720px) / 2 + 52px))}
+  .hero-sub{font-size:19px}
+}
