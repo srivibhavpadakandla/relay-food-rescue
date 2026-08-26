@@ -16,6 +16,7 @@ interface ScrollFloatProps {
   scrollStart?: string;
   scrollEnd?: string;
   stagger?: number;
+  scrub?: boolean;
 }
 
 const ScrollFloat: React.FC<ScrollFloatProps> = ({
@@ -27,7 +28,13 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
   ease = 'back.inOut(2)',
   scrollStart = 'center bottom+=50%',
   scrollEnd = 'bottom bottom-=40%',
-  stagger = 0.03
+  stagger = 0.03,
+  // LOCAL PATCH (deviates from the React Bits registry version).
+  // The registry hard-codes scrub:true, which parks a heading mid-animation --
+  // characters frozen in a staggered arc -- for as long as the reader stops
+  // scrolling inside its range. That is fine for background art and wrong for
+  // a section title, so scrubbing is now opt-in.
+  scrub = true
 }) => {
   const containerRef = useRef<HTMLHeadingElement>(null);
 
@@ -71,11 +78,12 @@ const ScrollFloat: React.FC<ScrollFloatProps> = ({
           scroller,
           start: scrollStart,
           end: scrollEnd,
-          scrub: true
+          scrub,
+          toggleActions: scrub ? undefined : 'play none none reverse' 
         }
       }
     );
-  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger]);
+  }, [scrollContainerRef, animationDuration, ease, scrollStart, scrollEnd, stagger, scrub]);
 
   return (
     <h2 ref={containerRef} className={`scroll-float ${containerClassName}`}>

@@ -277,7 +277,15 @@ export default function Landing() {
       {/* ---------------------------------------------------------------- */}
       <section className="band problem">
         <span className="kicker">THE FRICTION</span>
-        <ScrollFloat containerClassName="float-head" textClassName="float-text" scrollStart="center bottom+=40%">
+        <ScrollFloat
+          containerClassName="float-head"
+          textClassName="float-text"
+          scrub={false}
+          ease="power3.out"
+          animationDuration={0.9}
+          stagger={0.022}
+          scrollStart="top bottom-=12%"
+        >
           Six systems. One warming truck.
         </ScrollFloat>
         <ScrollReveal
@@ -302,7 +310,15 @@ export default function Landing() {
       {/* ---------------------------------------------------------------- */}
       <section className="band how" id="how">
         <span className="kicker">HOW IT WORKS</span>
-        <ScrollFloat containerClassName="float-head" textClassName="float-text" scrollStart="center bottom+=40%">
+        <ScrollFloat
+          containerClassName="float-head"
+          textClassName="float-text"
+          scrub={false}
+          ease="power3.out"
+          animationDuration={0.9}
+          stagger={0.022}
+          scrollStart="top bottom-=12%"
+        >
           The model proposes. Policy decides. Tools prove.
         </ScrollFloat>
 
@@ -323,7 +339,15 @@ export default function Landing() {
       {/* ---------------------------------------------------------------- */}
       <section className="band proof" id="proof">
         <span className="kicker">VERIFIED RUNS</span>
-        <ScrollFloat containerClassName="float-head" textClassName="float-text" scrollStart="center bottom+=40%">
+        <ScrollFloat
+          containerClassName="float-head"
+          textClassName="float-text"
+          scrub={false}
+          ease="power3.out"
+          animationDuration={0.9}
+          stagger={0.022}
+          scrollStart="top bottom-=12%"
+        >
           Three missions. One is unwinnable.
         </ScrollFloat>
         <p className="band-lede">
@@ -381,7 +405,15 @@ export default function Landing() {
       {/* ---------------------------------------------------------------- */}
       <section className="band showcase">
         <span className="kicker">THE CONSOLE</span>
-        <ScrollFloat containerClassName="float-head" textClassName="float-text" scrollStart="center bottom+=40%">
+        <ScrollFloat
+          containerClassName="float-head"
+          textClassName="float-text"
+          scrub={false}
+          ease="power3.out"
+          animationDuration={0.9}
+          stagger={0.022}
+          scrollStart="top bottom-=12%"
+        >
           Watch it think in real time.
         </ScrollFloat>
         <p className="band-lede">
@@ -433,7 +465,15 @@ export default function Landing() {
       {/* ---------------------------------------------------------------- */}
       <section className="band stack">
         <span className="kicker">BUILT ON</span>
-        <ScrollFloat containerClassName="float-head" textClassName="float-text" scrollStart="center bottom+=40%">
+        <ScrollFloat
+          containerClassName="float-head"
+          textClassName="float-text"
+          scrub={false}
+          ease="power3.out"
+          animationDuration={0.9}
+          stagger={0.022}
+          scrollStart="top bottom-=12%"
+        >
           One Cloud Run service. One revision.
         </ScrollFloat>
         <div className="stack-strip">
