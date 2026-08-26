@@ -33,8 +33,9 @@ Relay does that work autonomously:
 6. escalates anything it genuinely cannot solve;
 7. writes an idempotent receipt for every side effect.
 
-Press **Run rescue** in the console and you are watching real Gemini tool calls
-against a live policy gate. Nothing in the interface is pre-recorded.
+The landing page at `/` explains the problem and the design rule; the live
+console at `/console` runs it. Press **Run rescue** there and you are watching
+real Gemini tool calls against a live policy gate. Nothing is pre-recorded.
 
 ## Why this is agentic, not a chatbot
 
@@ -76,7 +77,7 @@ revision. [Diagram source](docs/architecture.mmd).
 | Runtime | Google Cloud Run (container, autoscaled) |
 | Checkpoints | Firestore when `RELAY_FIRESTORE=1`, in-memory otherwise |
 | Event trigger | Cloud Pub/Sub in the production design; the console posts directly today |
-| Console | React 19 + Vite, Anime.js, consuming a server-sent event stream |
+| Front end | React 19 + Vite. Landing page animated with Anime.js v4 (split text, drawable SVG, motion path); console consumes a server-sent event stream |
 
 ### Guardrails
 
@@ -107,7 +108,8 @@ export GEMINI_API_KEY="your-key"
 ./scripts/run-local.sh
 ```
 
-Open <http://127.0.0.1:8080> and press **Run rescue**.
+Open <http://127.0.0.1:8080> for the landing page, then **Watch it run** (or go
+straight to <http://127.0.0.1:8080/console>) and press **Run rescue**.
 
 ### Tests
 
@@ -170,7 +172,9 @@ services/relay_agent/world.py    Fleet, partner network and mission scenarios
 services/relay_agent/state.py    Idempotent receipt ledger + Firestore checkpoints
 services/relay_agent/server.py   FastAPI: console, SSE mission stream, health
 services/tests/                  Policy-gate and idempotency tests
-ui/                              React operations console (Vite)
+ui/src/Landing.tsx               Animated landing page (anime.js)
+ui/src/Console.tsx               Live mission-control console
+ui/src/agentStream.ts            SSE client for the agent event stream
 scripts/run-local.sh             One-command local run
 scripts/deploy-cloud-run.sh      Reproducible Cloud Run deployment
 docs/                            Architecture, verified runs, security notes

@@ -1,0 +1,157 @@
+/* Relay landing page. Shares the console's palette from styles.css. */
+
+.landing{min-height:100vh;background:
+  radial-gradient(1100px 600px at 78% -8%, #f7f9f0 0, transparent 60%),
+  radial-gradient(800px 500px at 8% 8%, #f4f8f2 0, transparent 55%),
+  var(--cream);
+  color:var(--ink)}
+
+/* --- nav ---------------------------------------------------------------- */
+.landing-nav{position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;
+  gap:20px;padding:16px 40px;backdrop-filter:blur(14px);
+  background:color-mix(in srgb, var(--cream) 82%, transparent);border-bottom:1px solid var(--line)}
+.landing-nav .relay-brand{text-decoration:none;color:inherit}
+.landing-nav nav{display:flex;align-items:center;gap:26px}
+.landing-nav nav a{font-size:13.5px;font-weight:500;color:var(--muted);text-decoration:none;transition:color .18s}
+.landing-nav nav a:hover{color:var(--ink)}
+.landing-nav .nav-cta{display:inline-flex;align-items:center;gap:6px;padding:9px 15px;border-radius:11px;
+  background:var(--forest);color:#fff;font-weight:600}
+.landing-nav .nav-cta:hover{color:#fff;background:#0c3122}
+
+/* --- hero --------------------------------------------------------------- */
+.hero{max-width:1240px;margin:0 auto;padding:76px 40px 90px;display:grid;
+  grid-template-columns:minmax(0,1.02fr) minmax(0,.98fr);gap:56px;align-items:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 13px;border-radius:999px;
+  border:1px solid var(--line);background:var(--paper);font-size:10.5px;font-weight:700;letter-spacing:.11em;
+  color:var(--green);opacity:0}
+.hero-badge i{width:6px;height:6px;border-radius:50%;background:var(--lime);
+  box-shadow:0 0 0 3px rgba(216,243,75,.35)}
+.hero-title{margin:20px 0 0;font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(44px,5.6vw,80px);line-height:1.02;letter-spacing:-.018em}
+.hero-title .char{display:inline-block;will-change:transform,opacity}
+.hero-sub{margin:22px 0 0;max-width:53ch;font-size:16.5px;line-height:1.62;color:#4d574f;opacity:0}
+.hero-sub b{color:var(--ink);font-weight:650}
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.hero-cta{display:inline-flex;align-items:center;gap:9px;padding:13px 22px;border-radius:13px;
+  font-size:14.5px;font-weight:650;text-decoration:none;opacity:0;transition:transform .2s,box-shadow .2s,background .2s}
+.hero-cta.primary{background:var(--lime);color:var(--forest);box-shadow:0 14px 30px -16px rgba(23,114,70,.85)}
+.hero-cta.primary:hover{transform:translateY(-2px);box-shadow:0 20px 36px -16px rgba(23,114,70,.9)}
+.hero-cta.ghost{background:var(--paper);color:var(--ink);border:1.5px solid var(--line)}
+.hero-cta.ghost:hover{border-color:var(--forest);transform:translateY(-2px)}
+
+.hero-metrics{display:flex;flex-wrap:wrap;gap:34px;margin:42px 0 0;padding-top:26px;border-top:1px solid var(--line)}
+.hero-metric{opacity:0}
+.hero-metric dt{font-size:10.5px;font-weight:700;letter-spacing:.1em;color:var(--muted)}
+.hero-metric dd{margin:5px 0 2px;font-family:"Instrument Serif",Georgia,serif;font-size:34px;line-height:1;color:var(--forest)}
+.hero-metric small{font-size:11.5px;color:var(--muted)}
+
+/* --- hero visual -------------------------------------------------------- */
+.hero-visual{position:relative;padding:26px;border-radius:26px;background:var(--paper);
+  border:1px solid var(--line);box-shadow:0 40px 90px -60px rgba(16,60,42,.7)}
+.hero-gauges{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:8px}
+.gauge{display:inline-flex;align-items:center;gap:7px;padding:7px 12px;border-radius:10px;
+  background:var(--cream);border:1px solid var(--line);font-size:9.5px;font-weight:700;letter-spacing:.09em;color:var(--muted)}
+.gauge b{font-size:13px;letter-spacing:0;color:var(--ink);font-variant-numeric:tabular-nums}
+.gauge.danger b{color:var(--coral)}
+.chain{width:100%;height:auto;display:block;overflow:visible}
+.chain .draw{opacity:.95}
+.chain-node,.chain-alert{opacity:0}
+.chain-label{font-family:Inter,system-ui,sans-serif;font-size:12px;fill:var(--ink)}
+.chain-label.strong{font-weight:700;font-size:13px}
+.chain-label.light{fill:#fffefa}
+
+/* --- shared bands ------------------------------------------------------- */
+.band{max-width:1240px;margin:0 auto;padding:82px 40px;border-top:1px solid var(--line)}
+.band-head{max-width:62ch}
+.band-head .kicker{display:block;font-size:10.5px;font-weight:700;letter-spacing:.13em;color:var(--green)}
+.band-head h2{margin:12px 0 0;font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(30px,3.5vw,46px);line-height:1.1;letter-spacing:-.012em}
+.band-head h2 em{font-style:italic;color:var(--green)}
+.band-head p{margin:16px 0 0;font-size:15.5px;line-height:1.65;color:#4d574f}
+[data-reveal-item]{opacity:0}
+
+/* --- problem ------------------------------------------------------------ */
+.scatter{display:flex;flex-wrap:wrap;gap:11px;margin-top:34px}
+.scatter-chip{display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;
+  background:var(--paper);border:1px dashed #c9d2c8;font-size:13.5px;color:#4d574f}
+
+/* --- steps -------------------------------------------------------------- */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));gap:18px;margin-top:40px}
+.step{position:relative;padding:26px 24px 28px;border-radius:18px;background:var(--paper);
+  border:1px solid var(--line);transition:transform .22s,box-shadow .22s}
+.step:hover{transform:translateY(-3px);box-shadow:0 24px 46px -32px rgba(16,60,42,.65)}
+.step-n{position:absolute;top:20px;right:22px;font-family:"Instrument Serif",Georgia,serif;
+  font-size:34px;color:#e6ece3}
+.step-icon{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;
+  border-radius:11px;background:#eaf3eb;color:var(--green)}
+.step h3{margin:16px 0 0;font-size:17px;font-weight:650}
+.step p{margin:9px 0 0;font-size:13.5px;line-height:1.6;color:#5a645c}
+
+/* --- missions ----------------------------------------------------------- */
+.missions{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:18px;margin-top:40px}
+.mission-card{display:flex;flex-direction:column;padding:24px;border-radius:18px;background:var(--paper);
+  border:1px solid var(--line);transition:transform .22s,box-shadow .22s}
+.mission-card:hover{transform:translateY(-3px);box-shadow:0 24px 46px -32px rgba(16,60,42,.6)}
+.mission-card.warn{background:linear-gradient(180deg,#fdf7ec,var(--paper));border-color:#ecd7ae}
+.mission-card header{display:flex;flex-direction:column;gap:5px}
+.mission-card header b{font-size:11px;letter-spacing:.09em;color:var(--green)}
+.mission-card.warn header b{color:#a86516}
+.mission-card header span{display:inline-flex;align-items:center;gap:7px;font-size:17px;font-weight:650}
+.mission-card > p{margin:13px 0 0;font-size:13.5px;line-height:1.6;color:#5a645c;flex:1}
+.mission-stat{margin-top:20px}
+.mission-stat strong{display:block;font-family:"Instrument Serif",Georgia,serif;font-size:38px;
+  line-height:1;color:var(--forest)}
+.mission-card.warn .mission-stat strong{color:#8a4a12}
+.mission-stat small{display:block;margin-top:5px;font-size:11.5px;color:var(--muted)}
+.mission-card footer{margin-top:18px;padding-top:15px;border-top:1px solid var(--line)}
+.receipt-pill{display:inline-flex;align-items:center;gap:7px;padding:6px 11px;border-radius:9px;
+  background:var(--cream);border:1px solid var(--line);font-size:11px;color:var(--muted)}
+.receipt-pill em{font-style:normal;font-weight:700;letter-spacing:.06em;color:var(--forest);
+  font-variant-numeric:tabular-nums}
+
+/* --- stack -------------------------------------------------------------- */
+.stack-strip{display:flex;flex-wrap:wrap;gap:11px;margin-top:32px}
+.stack-strip span{padding:11px 17px;border-radius:11px;background:var(--forest);color:#eaf3eb;
+  font-size:13px;font-weight:550}
+
+/* --- closer ------------------------------------------------------------- */
+.closer{text-align:center;border-bottom:1px solid var(--line)}
+.closer h2{margin:0 auto;max-width:20ch;font-family:"Instrument Serif",Georgia,serif;font-weight:400;
+  font-size:clamp(30px,4vw,50px);line-height:1.1}
+.closer h2 em{font-style:italic;color:var(--green)}
+.closer p{margin:16px auto 0;max-width:46ch;font-size:15px;color:#4d574f}
+.closer .hero-cta{margin-top:28px;opacity:1}
+
+.landing-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;
+  max-width:1240px;margin:0 auto;padding:30px 40px 46px;font-size:12px;color:var(--muted)}
+
+/* --- responsive --------------------------------------------------------- */
+@media (max-width:1000px){
+  .hero{grid-template-columns:1fr;gap:44px;padding:52px 26px 68px}
+  .band{padding:64px 26px}
+  .landing-nav{padding:14px 22px}
+  .landing-nav nav a:not(.nav-cta){display:none}
+  .landing-foot{padding:26px 22px 40px}
+}
+@media (max-width:560px){
+  .hero-metrics{gap:22px}
+  .hero-metric dd{font-size:28px}
+  .hero-visual{padding:18px}
+}
+@media (prefers-reduced-motion: reduce){
+  .hero-badge,.hero-sub,.hero-cta,.hero-metric,[data-reveal-item],.chain-node,.chain-alert{opacity:1 !important}
+}
+
+/* Split text: word wrappers keep words intact, chars animate individually. */
+.hero-title .word{display:inline-block;white-space:nowrap}
+.hero-title .char{display:inline-block;will-change:transform,opacity}
+/* SVG groups scale about their own centre, not the viewBox origin. */
+.chain-node,.chain-alert{transform-box:fill-box;transform-origin:center}
+
+/* The sticky nav must not cover a heading when an anchor is jumped to. */
+.band{scroll-margin-top:84px}
+
+/* The console collapses its sidebar brand on narrow screens; the landing nav
+   is a different context and must keep its wordmark. */
+.landing-nav .relay-brand{padding:0}
+.landing-nav .relay-brand > span:last-child{display:block}
