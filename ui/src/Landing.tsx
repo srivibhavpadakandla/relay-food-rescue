@@ -12,7 +12,7 @@ import ScrollFloat from "./reactbits/ScrollFloat";
 import ScrollReveal from "./reactbits/ScrollReveal";
 import ShinyText from "./reactbits/ShinyText";
 import SpotlightCard from "./reactbits/SpotlightCard";
-import TiltedCard from "./reactbits/TiltedCard";
+import DeliveryScene from "./DeliveryScene";
 import { fetchScenarios, type Scenario } from "./agentStream";
 
 const SCATTERED = [
@@ -270,6 +270,10 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* The food-delivery layer is scrubbed by the scroll of these bands. */}
+      <div className="delivery-wrap">
+      <DeliveryScene />
+
       {/* ---------------------------------------------------------------- */}
       <section className="band problem">
         <span className="kicker">THE FRICTION</span>
@@ -372,6 +376,8 @@ export default function Landing() {
         </div>
       </section>
 
+      </div>
+
       {/* ---------------------------------------------------------------- */}
       <section className="band showcase">
         <span className="kicker">THE CONSOLE</span>
@@ -383,23 +389,45 @@ export default function Landing() {
           events as the model makes it. Blocked calls show up as blocked.
         </p>
 
-        <AnimatedContent distance={90} duration={1} threshold={0.08} ease="power3.out">
-          <div className="showcase-frame">
-            <TiltedCard
-              imageSrc="/console-preview.jpg"
-              altText="Relay mission control after a completed rescue"
-              captionText="Mission RLY-2048 · 1,240 meals · $186"
-              containerHeight="clamp(280px, 42vw, 640px)"
-              containerWidth="100%"
-              imageHeight="clamp(280px, 42vw, 640px)"
-              imageWidth="100%"
-              rotateAmplitude={9}
-              scaleOnHover={1.03}
-              showMobileWarning={false}
-              showTooltip
-            />
-          </div>
-        </AnimatedContent>
+        <div className="clips">
+          {[
+            {
+              src: "rescue",
+              label: "RLY-2048 · full recovery",
+              caption: "Gemini reserves V-08, splits 1,240 meals across two food banks, dispatches. $186 of $250.",
+            },
+            {
+              src: "escalate",
+              label: "RLY-2090 · honest shortfall",
+              caption: "Verified capacity covers 1,050. It dispatches those and escalates the other 450 to a human.",
+            },
+          ].map((clip, i) => (
+            <AnimatedContent key={clip.src} distance={70} duration={0.9} delay={i * 0.12} threshold={0.1} ease="power3.out">
+              <figure className="clip">
+                <div className="clip-frame">
+                  <video
+                    poster={`/video/${clip.src}-poster.jpg`}
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    aria-label={`Screen recording of Relay running mission ${clip.label}`}
+                  >
+                    <source src={`/video/${clip.src}.webm`} type="video/webm" />
+                    <source src={`/video/${clip.src}.mp4`} type="video/mp4" />
+                  </video>
+                  <span className="clip-badge"><i />UNCUT SCREEN RECORDING</span>
+                </div>
+                <figcaption>
+                  <b>{clip.label}</b>
+                  <span>{clip.caption}</span>
+                </figcaption>
+              </figure>
+            </AnimatedContent>
+          ))}
+        </div>
+
       </section>
 
       {/* ---------------------------------------------------------------- */}

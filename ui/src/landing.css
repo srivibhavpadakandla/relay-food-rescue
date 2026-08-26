@@ -276,3 +276,51 @@
 
 /* Keep the tilted preview inside the band's measure. */
 .showcase-frame{max-width:1080px;margin-left:auto;margin-right:auto}
+
+/* --- food-delivery background layer -------------------------------------- */
+/* Sticky, one viewport tall, with a negative margin so it occupies no layout
+   space. Spanning the full (very tall) wrapper made the SVG's `slice` scaling
+   push the van thousands of pixels off-screen. */
+.delivery-scene{position:sticky;top:0;height:100vh;margin-bottom:-100vh;
+  z-index:0;pointer-events:none;overflow:hidden;
+  opacity:.5;mask-image:linear-gradient(180deg,transparent,#000 14%,#000 84%,transparent)}
+.delivery-scene svg{width:100%;height:100%;display:block}
+.delivery-scene .crate,.delivery-scene .pin{transform-box:fill-box;transform-origin:center}
+.delivery-scene .crate{opacity:0}
+
+/* Bands sit above the delivery layer. */
+.landing .band,.landing .hero{position:relative;z-index:1}
+.delivery-wrap{position:relative}
+
+@media (prefers-reduced-motion: reduce){ .delivery-scene{display:none} }
+@media (max-width:760px){ .delivery-scene{opacity:.32} }
+
+/* --- live screen recordings ---------------------------------------------- */
+.clips{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px;margin-top:38px}
+.clip{margin:0}
+.clip-frame{position:relative;border-radius:16px;overflow:hidden;border:1px solid var(--line);
+  background:var(--forest);box-shadow:0 36px 70px -46px rgba(16,60,42,.8);aspect-ratio:1440/900}
+.clip-frame video{width:100%;height:100%;display:block;object-fit:cover}
+.clip-badge{position:absolute;top:12px;left:12px;display:inline-flex;align-items:center;gap:7px;
+  padding:6px 11px;border-radius:999px;background:rgba(16,32,24,.72);backdrop-filter:blur(6px);
+  color:#eaf3eb;font-size:9.5px;font-weight:700;letter-spacing:.1em}
+.clip-badge i{width:6px;height:6px;border-radius:50%;background:#e55543;
+  box-shadow:0 0 0 3px rgba(229,85,67,.28);animation:clip-pulse 1.8s ease-in-out infinite}
+@keyframes clip-pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.clip figcaption{display:flex;flex-direction:column;gap:5px;margin-top:14px}
+.clip figcaption b{font-size:14px;font-weight:650}
+.clip figcaption span{font-size:13px;line-height:1.55;color:#5a645c}
+
+/* --- generated delivery backdrop ----------------------------------------- */
+.closer{position:relative;overflow:hidden;isolation:isolate}
+.closer::before{content:"";position:absolute;inset:0;z-index:-2;
+  background:url('/img/delivery-dock.jpg') center 58% / cover no-repeat;
+  opacity:.46;filter:saturate(.66) contrast(.92)}
+.closer::after{content:"";position:absolute;inset:0;z-index:-1;
+  background:
+    radial-gradient(60% 46% at 50% 50%, rgba(242,241,234,.9) 0%, rgba(242,241,234,.5) 60%, transparent 100%),
+    linear-gradient(180deg,var(--cream) 0%,rgba(242,241,234,.34) 40%,rgba(242,241,234,.5) 68%,var(--cream) 100%)}
+
+@media (prefers-reduced-motion: reduce){
+  .clip-badge i{animation:none}
+}
