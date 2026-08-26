@@ -5,19 +5,8 @@ on:
   pull_request:
 
 jobs:
-  web:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npm run lint
-      - run: npm test
-
   agent:
+    name: Agent policy tests
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,4 +15,25 @@ jobs:
           python-version: "3.12"
           cache: pip
       - run: pip install -r services/requirements.txt
-      - run: PYTHONPATH=services python -m unittest discover -s services/tests -v
+      - name: Run policy-gate tests
+        run: PYTHONPATH=services python -m unittest discover -s services/tests -v
+
+  ui:
+    name: UI typecheck and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+        working-directory: ui
+      - run: npm run build
+        working-directory: ui
+
+  container:
+    name: Container builds
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t relay-agent:ci .

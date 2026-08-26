@@ -1,0 +1,11 @@
+**/node_modules
+**/.venv
+**/__pycache__
+**/.wrangler
+**/dist
+services/ui
+.git
+.github
+docs/evidence/*.json
+*.log
+.env*

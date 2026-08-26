@@ -34,7 +34,7 @@ export function CountUp({ value, suffix = "", duration = 900 }: { value: number;
         if (ref.current) ref.current.textContent = `${Math.round(target.value).toLocaleString()}${suffix}`;
       },
     });
-    return () => animation.cancel();
+    return () => { animation.cancel(); };
   }, [duration, suffix, value]);
 
   return <span ref={ref}>0{suffix}</span>;

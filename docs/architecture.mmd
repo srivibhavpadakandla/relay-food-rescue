@@ -1,19 +1,38 @@
-flowchart LR
-  classDef event fill:#fffefa,stroke:#d8f34b,color:#142018
-  classDef runtime fill:#103c2a,stroke:#d8f34b,color:#ffffff
-  classDef model fill:#d8f34b,stroke:#103c2a,color:#103c2a
-  classDef state fill:#eaf3eb,stroke:#177246,color:#142018
-  classDef action fill:#fffefa,stroke:#177246,color:#142018
+flowchart TB
+  classDef event fill:#fffefa,stroke:#177246,stroke-width:1.5px,color:#142018
+  classDef gcp   fill:#103c2a,stroke:#0b2a1d,stroke-width:1.5px,color:#ffffff
+  classDef model fill:#d8f34b,stroke:#103c2a,stroke-width:1.5px,color:#103c2a
+  classDef gate  fill:#fdecea,stroke:#c8503c,stroke-width:2px,color:#7d2b1e
+  classDef read  fill:#eaf3eb,stroke:#177246,color:#142018
+  classDef write fill:#dcf0e1,stroke:#177246,stroke-width:1.5px,color:#0f3c28
+  classDef state fill:#eef3fb,stroke:#3b62a8,stroke-width:1.5px,color:#1c2f52
 
-  E[Temperature + fleet events]:::event --> P[Google Cloud Pub/Sub]:::event
-  P --> R[Cloud Run<br/>Google ADK API server]:::runtime
-  R --> G[Gemini 3.5 Flash<br/>planner + function calling]:::model
-  R <--> S[Firestore<br/>mission checkpoints]:::state
-  G --> C{Deterministic<br/>policy gate}:::runtime
-  C -->|approved| T[Scoped tool adapters]:::action
-  C -->|blocked| H[Human escalation]:::action
-  T --> F[Fleet reservation]:::action
-  T --> N[Partner capacity]:::action
-  T --> D[Route + notifications]:::action
-  F & N & D --> O[Receipts + OTel traces]:::state
-  O --> U[Relay operations UI]:::event
+  E["<b>Cold-chain event</b><br/>truck telemetry · Pub/Sub"]:::event
+
+  subgraph RUN["Google Cloud Run — one service, one revision"]
+    direction TB
+    API["<b>FastAPI</b><br/>serves the console + SSE stream"]:::gcp
+    ADK["<b>Google ADK Runner</b><br/>agent loop, capped at 24 model calls"]:::gcp
+    G["<b>Gemini 3.5 Flash</b><br/>plans the recovery, calls functions"]:::model
+    GATE{"<b>Deterministic policy gate</b><br/>spend ceiling · partner registry<br/>cold-chain rule · safe window"}:::gate
+    READ["<b>Discovery tools</b><br/>assess_incident · list_fleet_options<br/>find_partner_capacity"]:::read
+    WRITE["<b>Mutation tools</b><br/>reserve_vehicle · claim_partner_capacity<br/>dispatch_rescue · escalate_to_human"]:::write
+  end
+
+  LEDGER["<b>Idempotent receipt ledger</b><br/>one key per side effect"]:::state
+  FS["<b>Firestore</b><br/>mission checkpoints"]:::state
+  UI["<b>Relay operations console</b><br/>live agent trace + receipts"]:::event
+
+  E --> API
+  API --> ADK
+  ADK <--> G
+  G -- "proposes a tool call" --> GATE
+  GATE -- "read-only" --> READ
+  GATE -- "approved" --> WRITE
+  GATE -- "blocked + reason" --> ADK
+  READ -- "world state" --> ADK
+  WRITE --> LEDGER
+  LEDGER -- "receipt" --> ADK
+  LEDGER --> FS
+  ADK -- "live events" --> API
+  API -- "server-sent events" --> UI

@@ -1,5 +1,3 @@
-@import "tailwindcss";
-
 :root { --ink:#142018; --muted:#6a756d; --cream:#f2f1ea; --paper:#fffefa; --forest:#103c2a; --green:#177246; --lime:#d8f34b; --line:#dce1d9; --coral:#e55543; }
 *{box-sizing:border-box} html{background:var(--cream)} body{margin:0;background:var(--cream);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif} button{color:inherit;font:inherit} button:focus-visible{outline:3px solid #83a4ff;outline-offset:3px}
 .app-shell{min-height:100vh;display:flex;background:radial-gradient(circle at 70% 0%,#fbfaf5 0,var(--cream) 42%)}
@@ -20,3 +18,60 @@
 @media(max-width:1180px){.dashboard-grid{grid-template-columns:1fr}.trace-panel{min-height:450px}.impact-grid{grid-template-columns:repeat(2,1fr)}.proof-card{grid-column:span 2}.partner-node{right:2%}}
 @media(max-width:790px){.side-rail{width:72px;padding:22px 11px}.relay-brand{padding:0 6px 30px}.relay-brand>span:last-child,.nav-link span,.nav-link b,.stack-status,.operator{display:none}.nav-link{justify-content:center;padding:0}.control-room{margin-left:72px;width:calc(100% - 72px);padding:18px 13px 24px}.system-health,.incident-meta,.incident-banner time{display:none}.incident-banner{grid-template-columns:34px 1fr}.mission-panel{padding:18px}.panel-head h2{font-size:30px}.countdown{display:none}.mission-canvas{height:390px}.route-map,.safety-zone{display:none}.map-node{min-width:154px}.truck-node{left:5%;top:8%;transform:none}.agent-node{left:50%;top:42%}.partner-node.north{top:67%}.partner-node.harbor{bottom:5%}.mission-command{align-items:flex-end}.mission-command small{display:none}.impact-grid{grid-template-columns:1fr 1fr}.proof-card{grid-column:span 2}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+
+/* --- live-agent additions ------------------------------------------------ */
+.scenario-picker{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:0 0 18px}
+.scenario-chip{display:flex;flex-direction:column;gap:3px;align-items:flex-start;text-align:left;padding:11px 13px;border-radius:13px;border:1.5px solid var(--line);background:var(--paper);cursor:pointer;transition:border-color .18s,box-shadow .18s,transform .18s}
+.scenario-chip:hover:not(:disabled){border-color:var(--green);transform:translateY(-1px)}
+.scenario-chip:disabled{opacity:.55;cursor:not-allowed}
+.scenario-chip b{font-size:12px;letter-spacing:.06em;color:var(--green)}
+.scenario-chip span{font-size:13px;font-weight:600;line-height:1.25}
+.scenario-chip small{font-size:11.5px;color:var(--muted);line-height:1.35}
+.scenario-chip.active{border-color:var(--forest);background:linear-gradient(180deg,#f6fbf5,var(--paper));box-shadow:0 6px 18px -12px rgba(16,60,42,.5)}
+.scenario-chip.active b{color:var(--forest)}
+
+.trace-empty{display:flex;flex-direction:column;gap:6px;align-items:flex-start;padding:20px 4px;color:var(--muted)}
+.trace-empty b{font-size:13.5px;color:var(--ink)}
+.trace-empty small{font-size:12px;line-height:1.5;max-width:34ch}
+.trace-error{display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:12px;background:#fdecea;border:1px solid #f3c4bd;color:#8c2f22}
+.trace-error b{display:block;font-size:13px}
+.trace-error small{font-size:11.5px;opacity:.85;word-break:break-word}
+
+.tool-row.blocked{background:#fdecea;border-color:#f3c4bd}
+.tool-row.blocked .tool-icon{background:#f6d3ce;color:#a8382a}
+.tool-row.blocked .tool-state{color:#a8382a;font-weight:700}
+.tool-row.running .tool-state{color:var(--green)}
+.tool-row.is-read{opacity:.9}
+.read-tag{display:inline-block;margin-left:6px;font-style:normal;font-size:9.5px;letter-spacing:.08em;padding:1px 5px;border-radius:5px;background:var(--cream);color:var(--muted);border:1px solid var(--line);vertical-align:middle}
+.loader.dark{border-color:rgba(16,60,42,.25);border-top-color:var(--forest)}
+
+.agent-summary{margin-top:14px;padding:13px 14px;border-radius:13px;border:1px solid var(--line);background:linear-gradient(180deg,#f7fbf6,var(--paper))}
+.agent-summary p{margin:6px 0 0;font-size:12px;line-height:1.6;color:var(--ink);white-space:pre-wrap;max-height:230px;overflow-y:auto}
+
+.policy-title span.warn{background:#fbe3c9;color:#8a4a12}
+.incident-banner.is-partial{background:linear-gradient(96deg,#fdf3e3,var(--paper));border-color:#eccf9f}
+.incident-banner.is-partial .incident-icon{background:#f6dfba;color:#8a4a12}
+.map-node.partner-node.is-claimed{border-color:var(--green);box-shadow:0 10px 26px -18px rgba(23,114,70,.75)}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+
+/* Completed / blocked trace rows must read at full contrast. */
+.tool-row.running,.tool-row.confirmed,.tool-row.ok,.tool-row.blocked{opacity:1}
+.tool-row.confirmed .tool-icon,.tool-row.ok .tool-icon{color:var(--green);background:#dcf0e1}
+.tool-row.confirmed .tool-state,.tool-row.ok .tool-state{color:var(--green)}
+.tool-row.running .tool-icon{color:#6e5700;background:#fff0ad}
+
+/* Agent receipt: rendered, not raw markdown. */
+.agent-summary .receipt-body{margin:8px 0 0;max-height:240px;overflow-y:auto}
+.agent-summary h4{margin:10px 0 4px;font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--forest)}
+.agent-summary h4:first-child{margin-top:0}
+.agent-summary ul{margin:4px 0;padding-left:15px}
+.agent-summary li{font-size:11.5px;line-height:1.6;color:var(--ink);margin-bottom:2px}
+.agent-summary p.line{margin:4px 0;font-size:11.5px;line-height:1.6}
+.agent-summary strong{font-weight:650}
+.agent-summary code{background:var(--cream);border:1px solid var(--line);border-radius:4px;padding:0 4px;font-size:10.5px}
+
+/* Scenario picker sits above the hero so it never crowds the headline. */
+.scenario-picker{margin:0 0 20px}

@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules/
 /.pnp
 .pnp.*
 .yarn/*
@@ -13,10 +13,9 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/.vinext/
-/out/
+# build output
+/services/ui/
+/ui/dist/
 
 # misc
 .DS_Store
@@ -30,9 +29,6 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
-
-# vercel
-.vercel
 
 /dist/
 /.wrangler/
