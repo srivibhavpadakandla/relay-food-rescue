@@ -1,8 +1,9 @@
 import { animate, createDrawable, createTimeline, splitText, stagger, svg, utils } from "animejs";
 import {
   ArrowRight, Boxes, CircleDollarSign, Clock3, FileCheck2, Gauge, MapPin,
-  Network, Route, ShieldCheck, Sparkles, Truck, UserRound, Zap,
+  Network, Route, ShieldCheck, Sparkles, Truck, UserRound,
 } from "lucide-react";
+import { Logo } from "./components/Logo";
 import { useEffect, useRef, useState } from "react";
 
 import AnimatedContent from "./reactbits/AnimatedContent";
@@ -179,7 +180,7 @@ export default function Landing() {
     <div className="landing" ref={root}>
       <header className="landing-nav">
         <a className="relay-brand" href="/" data-route>
-          <span className="relay-mark"><Zap size={18} strokeWidth={2.8} /></span>
+          <span className="relay-mark"><Logo size={20} /></span>
           <span><b>RELAY</b><small>FOOD RESCUE OS</small></span>
         </a>
         <nav>

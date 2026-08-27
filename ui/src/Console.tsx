@@ -1,8 +1,9 @@
+import { Logo } from "./components/Logo";
 import { animate, stagger } from "animejs";
 import {
   Activity, AlertTriangle, ArrowUpRight, Bell, Check, ChevronRight, CircleDollarSign,
   Clock3, Cloud, Database, Fingerprint, Gauge, MapPin, Network, Play, RotateCcw,
-  Route, Search, ShieldCheck, Sparkles, Truck, UserRound, Zap,
+  Route, Search, ShieldCheck, Sparkles, Truck, UserRound,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CountUp, MagnetButton, ShinyText, SpotlightCard } from "./components/react-bits";
@@ -183,7 +184,7 @@ export default function Console() {
     <main className="app-shell" ref={root}>
       <aside className="side-rail" aria-label="Primary navigation">
         <a className="relay-brand" href="/" data-route data-enter aria-label="Back to the Relay home page">
-          <span className="relay-mark"><Zap size={18} strokeWidth={2.8} /></span>
+          <span className="relay-mark"><Logo size={20} /></span>
           <span><b>RELAY</b><small>FOOD RESCUE OS</small></span>
         </a>
         <nav data-enter>
