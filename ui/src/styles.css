@@ -76,3 +76,16 @@
 /* Scenario picker sits above the hero so it never crowds the headline. */
 .scenario-picker{margin:0 0 20px}
 .trace-error code{background:rgba(0,0,0,.06);border-radius:4px;padding:0 4px;font-size:10.5px}
+.relay-brand[href]{text-decoration:none;color:inherit;cursor:pointer}
+.nav-link[disabled]{opacity:.45;cursor:default}
+.nav-link[disabled]:hover{background:none}
+.nav-link .soon{margin-left:auto;font-style:normal;font-size:8.5px;letter-spacing:.1em;
+  text-transform:uppercase;color:#8fae9c;border:1px solid rgba(143,174,156,.35);
+  border-radius:5px;padding:1px 5px}
+
+/* A control that cannot act must not look like one that can. */
+.run-button:disabled{background:var(--cream);color:var(--muted);border:1.5px solid var(--line);
+  box-shadow:none;cursor:not-allowed}
+.run-button:disabled:hover{transform:none}
+.system-health.is-offline{color:#a8382a}
+.system-health.is-offline i{background:#e55543;box-shadow:0 0 0 3px rgba(229,85,67,.22)}

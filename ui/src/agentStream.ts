@@ -142,3 +142,22 @@ export const READ_ONLY_TOOLS = new Set([
   "list_fleet_options",
   "find_partner_capacity",
 ]);
+
+
+/** The published mission definitions, mirroring services/relay_agent/world.py.
+ *
+ * Used when no agent is reachable, so a statically hosted front end still shows
+ * the real missions instead of an empty shell. Running one still requires the
+ * agent; these are the incident definitions, not results.
+ */
+export const FALLBACK_SCENARIOS: Scenario[] = [
+  { mission_id: "RLY-2048", label: "Refrigeration failure \u00b7 Truck R-14",
+    summary: "1,240 meals at 9.8 \u00b0C with 71 minutes of safe window.",
+    meals: 1240, temperature_c: 9.8, safe_minutes: 71, max_spend_usd: 250, expectation: "" },
+  { mission_id: "RLY-2071", label: "Budget squeeze \u00b7 Truck R-22",
+    summary: "900 meals, a tight 40-minute window and a $150 spend ceiling.",
+    meals: 900, temperature_c: 8.4, safe_minutes: 40, max_spend_usd: 150, expectation: "" },
+  { mission_id: "RLY-2090", label: "Capacity shortfall \u00b7 Truck R-31",
+    summary: "1,500 meals against a partner network that can only take 1,050.",
+    meals: 1500, temperature_c: 10.6, safe_minutes: 35, max_spend_usd: 250, expectation: "" },
+];

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CountUp, MagnetButton, ShinyText, SpotlightCard } from "./components/react-bits";
 import { Receipt } from "./components/Receipt";
 import {
-  AGENT_API, fetchScenarios, runMission, READ_ONLY_TOOLS, TOOL_LABELS,
+  AGENT_API, FALLBACK_SCENARIOS, fetchScenarios, runMission, READ_ONLY_TOOLS, TOOL_LABELS,
   type AgentEvent, type MissionComplete, type MissionStart, type Scenario,
 } from "./agentStream";
 
@@ -84,7 +84,11 @@ export default function Console() {
   useEffect(() => {
     fetchScenarios()
       .then((s) => { setScenarios(s); if (s[0]) setSelected(s[0].mission_id); })
-      .catch(() => setAgentOffline(true));
+      .catch(() => {
+        setScenarios(FALLBACK_SCENARIOS);
+        setSelected(FALLBACK_SCENARIOS[0].mission_id);
+        setAgentOffline(true);
+      });
     fetch(`${AGENT_API}/healthz`).then((r) => r.json()).then(setHealth).catch(() => setAgentOffline(true));
   }, []);
 
@@ -178,15 +182,15 @@ export default function Console() {
   return (
     <main className="app-shell" ref={root}>
       <aside className="side-rail" aria-label="Primary navigation">
-        <div className="relay-brand" data-enter>
+        <a className="relay-brand" href="/" data-route data-enter aria-label="Back to the Relay home page">
           <span className="relay-mark"><Zap size={18} strokeWidth={2.8} /></span>
           <span><b>RELAY</b><small>FOOD RESCUE OS</small></span>
-        </div>
+        </a>
         <nav data-enter>
           <button className="nav-link active"><Activity size={17} /><span>Live operations</span><b>{scenarios.length}</b></button>
-          <button className="nav-link"><Route size={17} /><span>Missions</span></button>
-          <button className="nav-link"><Network size={17} /><span>Partner network</span></button>
-          <button className="nav-link"><ShieldCheck size={17} /><span>Policy center</span></button>
+          <button className="nav-link" disabled aria-disabled="true"><Route size={17} /><span>Missions</span><i className="soon">soon</i></button>
+          <button className="nav-link" disabled aria-disabled="true"><Network size={17} /><span>Partner network</span><i className="soon">soon</i></button>
+          <button className="nav-link" disabled aria-disabled="true"><ShieldCheck size={17} /><span>Policy center</span><i className="soon">soon</i></button>
         </nav>
 
         <div className="stack-status" data-enter>
@@ -203,7 +207,7 @@ export default function Console() {
         <header className="topbar" data-enter>
           <div><span className="kicker">AUTONOMOUS COLD-CHAIN RECOVERY</span><h1>Mission control</h1></div>
           <div className="topbar-actions">
-            <span className="system-health"><i /> {health ? "Agent online" : "Connecting…"}</span>
+            <span className={`system-health ${agentOffline ? "is-offline" : ""}`}><i /> {agentOffline ? "Agent offline" : health ? "Agent online" : "Connecting…"}</span>
             <button className="round-button" aria-label="Notifications"><Bell size={17} /><i /></button>
           </div>
         </header>
@@ -330,6 +334,7 @@ export default function Console() {
                 >
                   {complete ? <><Check size={17} /> {partial ? "Escalated" : "Rescue secured"}</>
                     : running ? <><span className="loader" /> {mutations.length ? `Action ${mutations.length}` : "Planning"}</>
+                    : agentOffline ? <><AlertTriangle size={16} /> Needs the agent</>
                     : <><Play size={16} fill="currentColor" /> Run rescue</>}
                 </MagnetButton>
               </div>

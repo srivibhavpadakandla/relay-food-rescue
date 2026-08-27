@@ -13,7 +13,7 @@ import ScrollReveal from "./reactbits/ScrollReveal";
 import ShinyText from "./reactbits/ShinyText";
 import SpotlightCard from "./reactbits/SpotlightCard";
 import DeliveryScene from "./DeliveryScene";
-import { fetchScenarios, type Scenario } from "./agentStream";
+import { FALLBACK_SCENARIOS, fetchScenarios, type Scenario } from "./agentStream";
 
 const SCATTERED = [
   { icon: Truck, label: "Fleet system" },
@@ -66,20 +66,6 @@ const OUTCOMES: Record<string, {
     note: "Verified capacity tops out at 1,050. It refuses to fake the remaining 450.",
   },
 };
-
-/** The published mission definitions, matching services/relay_agent/world.py.
- *  Used when this build has no agent origin to read them from. */
-const FALLBACK_SCENARIOS: Scenario[] = [
-  { mission_id: "RLY-2048", label: "Refrigeration failure · Truck R-14",
-    summary: "1,240 meals at 9.8 °C with 71 minutes of safe window.",
-    meals: 1240, temperature_c: 9.8, safe_minutes: 71, max_spend_usd: 250, expectation: "" },
-  { mission_id: "RLY-2071", label: "Budget squeeze · Truck R-22",
-    summary: "900 meals, a tight 40-minute window and a $150 spend ceiling.",
-    meals: 900, temperature_c: 8.4, safe_minutes: 40, max_spend_usd: 150, expectation: "" },
-  { mission_id: "RLY-2090", label: "Capacity shortfall · Truck R-31",
-    summary: "1,500 meals against a partner network that can only take 1,050.",
-    meals: 1500, temperature_c: 10.6, safe_minutes: 35, max_spend_usd: 250, expectation: "" },
-];
 
 const STACK = [
   "Gemini 3.5 Flash", "Google Agent Development Kit", "Cloud Run",
