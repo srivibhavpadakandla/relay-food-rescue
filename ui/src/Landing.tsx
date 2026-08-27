@@ -67,6 +67,20 @@ const OUTCOMES: Record<string, {
   },
 };
 
+/** The published mission definitions, matching services/relay_agent/world.py.
+ *  Used when this build has no agent origin to read them from. */
+const FALLBACK_SCENARIOS: Scenario[] = [
+  { mission_id: "RLY-2048", label: "Refrigeration failure · Truck R-14",
+    summary: "1,240 meals at 9.8 °C with 71 minutes of safe window.",
+    meals: 1240, temperature_c: 9.8, safe_minutes: 71, max_spend_usd: 250, expectation: "" },
+  { mission_id: "RLY-2071", label: "Budget squeeze · Truck R-22",
+    summary: "900 meals, a tight 40-minute window and a $150 spend ceiling.",
+    meals: 900, temperature_c: 8.4, safe_minutes: 40, max_spend_usd: 150, expectation: "" },
+  { mission_id: "RLY-2090", label: "Capacity shortfall · Truck R-31",
+    summary: "1,500 meals against a partner network that can only take 1,050.",
+    meals: 1500, temperature_c: 10.6, safe_minutes: 35, max_spend_usd: 250, expectation: "" },
+];
+
 const STACK = [
   "Gemini 3.5 Flash", "Google Agent Development Kit", "Cloud Run",
   "Vertex AI", "Firestore", "Cloud Pub/Sub",
@@ -79,7 +93,9 @@ export default function Landing() {
   // The numbers on this page describe a real system, so read the live mission
   // definitions from the agent rather than hard-coding them here.
   useEffect(() => {
-    fetchScenarios().then(setScenarios).catch(() => {});
+    fetchScenarios()
+      .then(setScenarios)
+      .catch(() => setScenarios(FALLBACK_SCENARIOS));
   }, []);
 
   // Deep links land at the top when the anchor resolves before webfonts settle.

@@ -62,8 +62,19 @@ export type AgentEvent =
   | { type: "mission_complete"; data: MissionComplete }
   | { type: "error"; data: { message: string } };
 
+/** Where the agent lives.
+ *
+ * Empty by default: the Cloud Run container serves the console and the agent
+ * from one origin. Set VITE_AGENT_API at build time to point a separately
+ * hosted front end (Cloudflare Pages, a preview deploy) at the agent service.
+ */
+export const AGENT_API = (import.meta.env.VITE_AGENT_API ?? "").replace(/\/+$/, "");
+
+/** True when this build has no agent to talk to, so the UI can say so plainly. */
+export const AGENT_CONFIGURED = AGENT_API !== "" || !import.meta.env.VITE_STATIC_ONLY;
+
 export async function fetchScenarios(): Promise<Scenario[]> {
-  const res = await fetch("/api/scenarios");
+  const res = await fetch(`${AGENT_API}/api/scenarios`);
   if (!res.ok) throw new Error(`Scenario load failed (${res.status})`);
   return (await res.json()).scenarios;
 }
@@ -73,7 +84,7 @@ export async function* runMission(
   missionId: string,
   signal?: AbortSignal,
 ): AsyncGenerator<AgentEvent> {
-  const res = await fetch(`/api/missions/${missionId}/run`, {
+  const res = await fetch(`${AGENT_API}/api/missions/${missionId}/run`, {
     method: "POST",
     headers: { Accept: "text/event-stream" },
     signal,

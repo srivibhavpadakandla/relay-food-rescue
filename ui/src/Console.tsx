@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { CountUp, MagnetButton, ShinyText, SpotlightCard } from "./components/react-bits";
 import { Receipt } from "./components/Receipt";
 import {
-  fetchScenarios, runMission, READ_ONLY_TOOLS, TOOL_LABELS,
+  AGENT_API, fetchScenarios, runMission, READ_ONLY_TOOLS, TOOL_LABELS,
   type AgentEvent, type MissionComplete, type MissionStart, type Scenario,
 } from "./agentStream";
 
@@ -62,6 +62,9 @@ export default function Console() {
   const [scenarios, setScenarios] = useState<Scenario[]>([]);
   const [selected, setSelected] = useState<string>("RLY-2048");
   const [health, setHealth] = useState<Health | null>(null);
+  // No agent origin behind this build (a static front end): say so plainly
+  // rather than letting Run rescue fail with a network error.
+  const [agentOffline, setAgentOffline] = useState(false);
 
   const [running, setRunning] = useState(false);
   const [start, setStart] = useState<MissionStart | null>(null);
@@ -79,8 +82,10 @@ export default function Console() {
   );
 
   useEffect(() => {
-    fetchScenarios().then((s) => { setScenarios(s); if (s[0]) setSelected(s[0].mission_id); }).catch(() => {});
-    fetch("/healthz").then((r) => r.json()).then(setHealth).catch(() => {});
+    fetchScenarios()
+      .then((s) => { setScenarios(s); if (s[0]) setSelected(s[0].mission_id); })
+      .catch(() => setAgentOffline(true));
+    fetch(`${AGENT_API}/healthz`).then((r) => r.json()).then(setHealth).catch(() => setAgentOffline(true));
   }, []);
 
   useEffect(() => {
@@ -321,7 +326,7 @@ export default function Console() {
                 <MagnetButton
                   className={`run-button ${running || complete ? "running" : ""}`}
                   onClick={launch}
-                  disabled={running || complete || !scenario}
+                  disabled={running || complete || !scenario || agentOffline}
                 >
                   {complete ? <><Check size={17} /> {partial ? "Escalated" : "Rescue secured"}</>
                     : running ? <><span className="loader" /> {mutations.length ? `Action ${mutations.length}` : "Planning"}</>
@@ -338,7 +343,22 @@ export default function Console() {
             </div>
 
             <div className="trace-scroll">
-              {!rows.length && !error && (
+              {agentOffline && !rows.length && (
+                <div className="trace-error" role="status">
+                  <AlertTriangle size={16} />
+                  <div>
+                    <b>No agent attached to this build</b>
+                    <small>
+                      This front end is served without the Relay agent behind it, so a
+                      mission cannot run here. Open the live Cloud Run service, or clone the
+                      repository and run <code>./scripts/run-local.sh</code> with a Gemini
+                      API key to drive it locally.
+                    </small>
+                  </div>
+                </div>
+              )}
+
+              {!rows.length && !error && !agentOffline && (
                 <div className="trace-empty">
                   <Sparkles size={18} />
                   <b>{running ? "Contacting Gemini 3.5 Flash…" : "No run yet"}</b>

@@ -75,3 +75,4 @@
 
 /* Scenario picker sits above the hero so it never crowds the headline. */
 .scenario-picker{margin:0 0 20px}
+.trace-error code{background:rgba(0,0,0,.06);border-radius:4px;padding:0 4px;font-size:10.5px}
